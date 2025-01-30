@@ -1,0 +1,28 @@
+# Input filename rule: (column count)_(row count).jpg
+# ImageMagick geometry: width x height (column count x row count)
+
+dir=12   #folder name
+c=14   #column 0-14
+r=8   #row 0-8
+
+# Traverse rows with i in the outer loop
+for i in $(seq 0 $r)
+do
+  # Traverse columns with j in the inner loop
+  tmp="$dir/0_${i}.jpg"
+  for j in $(seq 1 $c)
+  do
+    tmp="${tmp} $dir/${j}_${i}.jpg"
+  done
+
+  # Montage columns (1x1) images into a row
+  # dim_r is the length of the row (number of columns in a row x 1)
+  dim_r="$(($c+1))x1"
+  magick montage ${tmp} -tile ${dim_r} -geometry -2+0 out_$i.jpg
+done
+
+# dim_c is the dimension of the column (1 x number of rows in a column)
+dim_c="1x$(($r+1))"
+magick montage out_[0-8].jpg -tile ${dim_c} -geometry +0-2 $1.jpg   #$1: input
+
+rm out_*.jpg
