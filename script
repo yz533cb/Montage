@@ -1,4 +1,4 @@
-# Input filename rule: (column count)_(row count).jpg ...
+# Input filename rule: (column count)_(row count).jpg
 # ImageMagick geometry: width x height (column count x row count)
 
 dir=12   #folder name
